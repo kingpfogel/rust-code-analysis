@@ -251,7 +251,7 @@ fn finalize<T: ParserTrait>(state_stack: &mut Vec<State>, diff_level: usize) {
 
             // Merge function spaces
             last_state.space.metrics.merge(&state.space.metrics);
-            last_state.space.spaces.push(state.space);
+            // last_state.space.spaces.push(state.space);
         }
     }
 }

@@ -6,6 +6,8 @@ use std::path::{Path, PathBuf};
 use std::process;
 use std::sync::{Arc, Mutex};
 use std::thread::available_parallelism;
+use rand::{Rng, thread_rng};
+use rand::distributions::Alphanumeric;
 
 use clap::Parser;
 use globset::{Glob, GlobSet, GlobSetBuilder};
@@ -91,6 +93,11 @@ fn act_on_file(path: PathBuf, cfg: &Config) -> std::io::Result<()> {
     } else if cfg.metrics {
         if let Some(output_format) = &cfg.output_format {
             if let Some(space) = get_function_spaces(&language, source, &path, pr) {
+                let mut rng = thread_rng();
+                let chars: String = (0..10).map(|_| rng.sample(Alphanumeric) as char).collect();
+                let mut prefix: String = String::from("/tmp/test/");
+                prefix.push_str(&chars);
+                let path: PathBuf = PathBuf::from(prefix);
                 output_format.dump_formats(&space, &path, &cfg.output, cfg.pretty)
             } else {
                 Ok(())
